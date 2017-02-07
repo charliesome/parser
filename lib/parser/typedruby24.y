@@ -2342,6 +2342,36 @@ keyword_variable: kNIL
                   {
                     result = nil
                   }
+
+        tr_cpath: tCOLON3 tCONSTANT
+                    {
+                      result = @builder.const_global(val[0], val[1])
+                    }
+                | tCONSTANT
+                    {
+                      result = @builder.const(val[0])
+                    }
+                | tr_cpath tCOLON2 tCONSTANT
+                    {
+                      result = @builder.const_fetch(val[0], val[1], val[2])
+                    }
+
+         tr_type: tr_cpath
+                    {
+                      result = @builder.tr_cpath(val[0])
+                    }
+                | tLBRACK tr_type rbracket
+                    {
+                      result = @builder.tr_array(val[1])
+                    }
+                | tLBRACE tr_type tASSOC tr_type tRCURLY
+                    {
+                      result = @builder.tr_hash(val[1], val[3])
+                    }
+                | tEH tr_type
+                    {
+                      result = @builder.tr_nillable(val[1])
+                    }
 end
 
 ---- header

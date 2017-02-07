@@ -1086,6 +1086,22 @@ module Parser
       end
     end
 
+    def tr_cpath(cpath)
+      n(:tr_cpath, cpath)
+    end
+
+    def tr_array(type)
+      n(:tr_array, type)
+    end
+
+    def tr_hash(key_type, value_type)
+      n(:tr_hash, key_type, value_type)
+    end
+
+    def tr_nillable(type)
+      n(:tr_nillable, type)
+    end
+
     private
 
     #
