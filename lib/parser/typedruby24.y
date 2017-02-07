@@ -2402,14 +2402,14 @@ keyword_variable: kNIL
                       result = @builder.const_fetch(val[0], val[1], val[2])
                     }
 
-        tr_types: tr_types tCOMMA tr_type
-                    {
-                      result = val[0] << val[2]
-                    }
-                | tr_type
-                    {
-                      result = [val[0]]
-                    }
+#       tr_types: tr_types tCOMMA tr_type
+#                   {
+#                     result = val[0] << val[2]
+#                   }
+#               | tr_type
+#                   {
+#                     result = [val[0]]
+#                   }
 
          tr_type: tr_cpath
                     {
