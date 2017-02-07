@@ -604,6 +604,16 @@ module Parser
         collection_map(begin_t, args, end_t))
     end
 
+    def prototype(args, return_type)
+      n(:prototype, [args, return_type],
+        expr_map(join_exprs(args, return_type)))
+    end
+
+    def typed_arg(type, arg)
+      n(:typed_arg, [type, arg],
+        expr_map(join_exprs(type, arg)))
+    end
+
     def arg(name_t)
       n(:arg, [ value(name_t).to_sym ],
         variable_map(name_t))
@@ -651,9 +661,14 @@ module Parser
         variable_map(name_t))
     end
 
-    def blockarg(amper_t, name_t)
-      n(:blockarg, [ value(name_t).to_sym ],
-        arg_prefix_map(amper_t, name_t))
+    def blockarg(amper_t, name_t=nil)
+      if name_t
+        n(:blockarg, [ value(name_t).to_sym ],
+          arg_prefix_map(amper_t, name_t))
+      else
+        n0(:blockarg, [],
+          arg_prefix_map(amper_t))
+      end
     end
 
     def procarg0(arg)
@@ -1087,19 +1102,23 @@ module Parser
     end
 
     def tr_cpath(cpath)
-      n(:tr_cpath, cpath)
+      n(:tr_cpath, [cpath],
+        expr_map(cpath.loc.expression))
     end
 
-    def tr_array(type)
-      n(:tr_array, type)
+    def tr_array(begin_t, type, end_t)
+      n(:tr_array, [type],
+        expr_map(loc(begin_t).join(type.loc.expression).join(loc(end_t))))
     end
 
-    def tr_hash(key_type, value_type)
-      n(:tr_hash, key_type, value_type)
+    def tr_hash(begin_t, key_type, assoc_t, value_type, end_t)
+      n(:tr_hash, [key_type, value_type],
+        binary_op_map(key_type, assoc_t, value_type))
     end
 
-    def tr_nillable(type)
-      n(:tr_nillable, type)
+    def tr_nillable(eh_t, type)
+      n(:tr_nillable, [type],
+        expr_map(loc(eh_t).join(type.loc.expression)))
     end
 
     private
@@ -1151,6 +1170,11 @@ module Parser
     end
 
     def check_duplicate_args(args, map={})
+      if args.nil?
+        require "pry"
+        pry binding
+      end
+
       args.each do |this_arg|
         case this_arg.type
         when :arg, :optarg, :restarg, :blockarg,
