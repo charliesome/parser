@@ -2427,7 +2427,6 @@ keyword_variable: kNIL
                     {
                       result = @builder.tr_nillable(val[0], val[1])
                     }
-                |
 
        tr_argsig: tr_type
                     {
