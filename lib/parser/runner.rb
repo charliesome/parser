@@ -94,6 +94,11 @@ module Parser
         @parser_class = Parser::Ruby24
       end
 
+      opts.on '--typedruby24', 'Parse TypedRuby 2.4' do
+        require 'parser/typedruby24'
+        @parser_class = Parser::TypedRuby24
+      end
+
       opts.on '--mac', 'Parse as MacRuby 0.12 would' do
         require 'parser/macruby'
         @parser_class = Parser::MacRuby
