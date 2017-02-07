@@ -1,4 +1,4 @@
-class Parser::Ruby24
+class Parser::TypedRuby24
 
 token kCLASS kMODULE kDEF kUNDEF kBEGIN kRESCUE kENSURE kEND kIF kUNLESS
       kTHEN kELSIF kELSE kCASE kWHEN kWHILE kUNTIL kFOR kBREAK kNEXT
