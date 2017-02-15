@@ -1121,6 +1121,11 @@ module Parser
         expr_map(loc(eh_t).join(type.loc.expression)))
     end
 
+    def tr_nil(nil_t)
+      n0(:tr_nil,
+        token_map(nil_t))
+    end
+
     private
 
     #
