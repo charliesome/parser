@@ -605,8 +605,15 @@ module Parser
     end
 
     def prototype(args, return_type)
+      loc =
+        if args.loc.expression
+          join_exprs(args, return_type)
+        else
+          return_type.loc.expression
+        end
+
       n(:prototype, [args, return_type],
-        expr_map(join_exprs(args, return_type)))
+        expr_map(loc))
     end
 
     def typed_arg(type, arg)
