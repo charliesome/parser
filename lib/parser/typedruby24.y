@@ -2272,15 +2272,27 @@ keyword_variable: kNIL
 
     restarg_mark: tSTAR2 | tSTAR
 
-      f_rest_arg: restarg_mark tIDENTIFIER
+      f_rest_arg: tr_argsig restarg_mark tIDENTIFIER
                     {
-                      @static_env.declare val[1][0]
+                      @static_env.declare val[2][0]
 
-                      result = [ @builder.restarg(val[0], val[1]) ]
+                      restarg = @builder.restarg(val[1], val[2])
+
+                      if val[0]
+                        restarg = @builder.typed_arg(val[0], restarg)
+                      end
+
+                      result = [ restarg ]
                     }
-                | restarg_mark
+                | tr_argsig restarg_mark
                     {
-                      result = [ @builder.restarg(val[0]) ]
+                      restarg = @builder.restarg(val[1], val[2])
+
+                      if val[0]
+                        restarg = @builder.typed_arg(val[0], restarg)
+                      end
+
+                      result = [ restarg ]
                     }
 
      blkarg_mark: tAMPER2 | tAMPER
