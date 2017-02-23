@@ -539,6 +539,10 @@ rule
                     {
                       result = @builder.const(val[0])
                     }
+                | primary_value tCOLON2 tLBRACK2 tr_gendeclargs rbracket
+                    {
+                      result = @builder.tr_gendecl(val[0], val[2], val[3], val[4])
+                    }
                 | primary_value tCOLON2 cname
                     {
                       result = @builder.const_fetch(val[0], val[1], val[2])
@@ -2460,6 +2464,15 @@ keyword_variable: kNIL
                 |
                     {
                       result = nil
+                    }
+
+  tr_gendeclargs: tr_gendeclargs tCOMMA tCONSTANT
+                    {
+                      result = val[0] << @builder.tr_gendeclarg(val[2])
+                    }
+                | tCONSTANT
+                    {
+                      result = [@builder.tr_gendeclarg(val[0])]
                     }
 end
 

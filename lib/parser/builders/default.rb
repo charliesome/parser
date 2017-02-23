@@ -1133,6 +1133,16 @@ module Parser
         token_map(nil_t))
     end
 
+    def tr_gendecl(cpath, begin_t, genargs, end_t)
+      n(:tr_gendecl, [cpath, *genargs],
+        expr_map(
+          cpath.loc.expression.join(loc(end_t))))
+    end
+
+    def tr_gendeclarg(tok)
+      value(tok).to_sym
+    end
+
     private
 
     #
