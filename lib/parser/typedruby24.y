@@ -2447,6 +2447,16 @@ keyword_variable: kNIL
                     {
                       result = @builder.tr_nil(val[0])
                     }
+                | tSYMBOL
+                    {
+                      result =
+                        case val[0][0]
+                        when "self", "instance", "class", "any"
+                          @builder.tr_special(val[0])
+                        else
+                          diagnostic :error, :bad_special_type, { value: val[0][0] }, val[0]
+                        end
+                    }
 
        tr_argsig: tr_type
                     {

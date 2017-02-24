@@ -66,5 +66,8 @@ module Parser
     # Rewriter diagnostics
     :invalid_action          => 'cannot %{action}',
     :clobbered               => 'clobbered by: %{action}',
+
+    # TypedRuby diagnostics
+    :bad_special_type        => "bad special type: :%{value}",
   }.freeze
 end

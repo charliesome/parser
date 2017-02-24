@@ -1143,6 +1143,11 @@ module Parser
       value(tok).to_sym
     end
 
+    def tr_special(spec_t)
+      n(:tr_special, [value(spec_t).to_sym],
+        token_map(spec_t))
+    end
+
     private
 
     #
