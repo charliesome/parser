@@ -1414,9 +1414,18 @@ opt_block_args_tail:
                     {
                       result = @builder.args(nil, [], nil)
                     }
-                | block_param_def
+                | block_prototype
                     {
                       @lexer.state = :expr_value
+                    }
+
+ block_prototype: block_param_def tr_returnsig
+                    {
+                      result = val[0]
+
+                      if val[1]
+                        result = @builder.prototype(result, val[1])
+                      end
                     }
 
  block_param_def: tPIPE opt_bv_decl tPIPE
