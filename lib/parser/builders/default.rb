@@ -673,7 +673,7 @@ module Parser
         n(:blockarg, [ value(name_t).to_sym ],
           arg_prefix_map(amper_t, name_t))
       else
-        n0(:blockarg, [],
+        n0(:blockarg,
           arg_prefix_map(amper_t))
       end
     end
@@ -1141,6 +1141,12 @@ module Parser
 
     def tr_gendeclarg(tok)
       value(tok).to_sym
+    end
+
+    def tr_geninst(cpath, begin_t, genargs, end_t)
+      n(:tr_geninst, [cpath, *genargs],
+        expr_map(
+          cpath.loc.expression.join(loc(end_t))))
     end
 
     def tr_special(spec_t)

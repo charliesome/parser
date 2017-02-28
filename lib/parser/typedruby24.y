@@ -2418,18 +2418,22 @@ keyword_variable: kNIL
                       result = @builder.const_fetch(val[0], val[1], val[2])
                     }
 
-#       tr_types: tr_types tCOMMA tr_type
-#                   {
-#                     result = val[0] << val[2]
-#                   }
-#               | tr_type
-#                   {
-#                     result = [val[0]]
-#                   }
+       tr_types: tr_types tCOMMA tr_type
+                   {
+                     result = val[0] << val[2]
+                   }
+               | tr_type
+                   {
+                     result = [val[0]]
+                   }
 
          tr_type: tr_cpath
                     {
                       result = @builder.tr_cpath(val[0])
+                    }
+                | tr_cpath tCOLON2 tLBRACK2 tr_types rbracket
+                    {
+                      result = @builder.tr_geninst(val[0], val[2], val[3], val[4])
                     }
                 | tLBRACK tr_type rbracket
                     {
