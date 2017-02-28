@@ -1149,6 +1149,11 @@ module Parser
           cpath.loc.expression.join(loc(end_t))))
     end
 
+    def tr_proc(begin_t, args, end_t)
+      n(:tr_proc, [args],
+        expr_map(loc(begin_t).join(args.loc.expression).join(loc(end_t))))
+    end
+
     def tr_special(spec_t)
       n(:tr_special, [value(spec_t).to_sym],
         token_map(spec_t))

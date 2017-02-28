@@ -2452,6 +2452,10 @@ keyword_variable: kNIL
                     {
                       result = @builder.tr_hash(val[0], val[1], val[2], val[3], val[4])
                     }
+                | tLBRACE block_prototype tRCURLY
+                    {
+                      result = @builder.tr_proc(val[0], val[1], val[2])
+                    }
                 | tTILDE tr_type
                     {
                       result = @builder.tr_nillable(val[0], val[1])
