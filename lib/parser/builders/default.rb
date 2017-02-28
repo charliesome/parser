@@ -680,7 +680,12 @@ module Parser
 
     def procarg0(arg)
       if self.class.emit_procarg0
-        arg.updated(:procarg0)
+        if arg.type == :typed_arg
+          type, actual_arg = *arg
+          typed_arg(type, actual_arg.updated(:procarg0))
+        else
+          arg.updated(:procarg0)
+        end
       else
         arg
       end
