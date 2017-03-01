@@ -1418,17 +1418,16 @@ opt_block_args_tail:
                     {
                       result = @builder.args(nil, [], nil)
                     }
-                | block_prototype
+                | block_param_def
                     {
                       @lexer.state = :expr_value
                     }
-
- block_prototype: block_param_def tr_returnsig
+                  tr_returnsig
                     {
                       result = val[0]
 
-                      if val[1]
-                        result = @builder.prototype(result, val[1])
+                      if val[2]
+                        result = @builder.prototype(result, val[2])
                       end
                     }
 
@@ -2456,9 +2455,16 @@ keyword_variable: kNIL
                     {
                       result = @builder.tr_hash(val[0], val[1], val[2], val[3], val[4])
                     }
-                | tLBRACE block_prototype tRCURLY
+                | tLBRACE block_param_def tr_returnsig tRCURLY
                     {
-                      result = @builder.tr_proc(val[0], val[1], val[2])
+                      prototype =
+                        if val[2]
+                          @builder.prototype(val[1], val[2])
+                        else
+                          val[1]
+                        end
+
+                      result = @builder.tr_proc(val[0], prototype, val[3])
                     }
                 | tTILDE tr_type
                     {
