@@ -1164,6 +1164,11 @@ module Parser
         token_map(spec_t))
     end
 
+    def tr_cast(begin_t, expr, colon_t, type, end_t)
+      n(:tr_cast, [expr, type],
+        expr_map(loc(begin_t).join(loc(end_t))))
+    end
+
     private
 
     #

@@ -961,6 +961,10 @@ rule
                     {
                       result = @builder.begin(val[0], val[1], val[2])
                     }
+                | tLPAREN expr tCOLON tr_type tRPAREN
+                    {
+                      result = @builder.tr_cast(val[0], val[1], val[2], val[3], val[4])
+                    }
                 | primary_value tCOLON2 tCONSTANT
                     {
                       result = @builder.const_fetch(val[0], val[1], val[2])
