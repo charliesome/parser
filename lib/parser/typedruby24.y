@@ -1427,7 +1427,7 @@ opt_block_args_tail:
                       result = val[0]
 
                       if val[2]
-                        result = @builder.prototype(result, val[2])
+                        result = @builder.prototype(nil, result, val[2])
                       end
                     }
 
@@ -1986,29 +1986,39 @@ keyword_variable: kNIL
                       result = nil
                     }
 
-       f_arglist: tLPAREN2 f_args rparen
+tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
+                    {
+                      result = @builder.tr_genargs(val[0], val[1], val[2])
+                    }
+                | # nothing
+                    {
+                      result = nil
+                    }
+
+       f_arglist: tr_methodgenargs tLPAREN2 f_args rparen
                     {
                       @lexer.state = :expr_value
                     }
                   tr_returnsig
                     {
-                      result = @builder.args(val[0], val[1], val[2])
+                      result = @builder.args(val[1], val[2], val[3])
 
-                      if val[4]
-                        result = @builder.prototype(result, val[4])
+                      if val[0] || val[5]
+                        result = @builder.prototype(val[0], result, val[5])
                       end
                     }
-                |   {
+                | tr_methodgenargs
+                    {
                       result = @lexer.in_kwarg
                       @lexer.in_kwarg = true
                     }
                   f_args tr_returnsig term
                     {
-                      @lexer.in_kwarg = val[0]
-                      result = @builder.args(nil, val[1], nil)
+                      @lexer.in_kwarg = val[1]
+                      result = @builder.args(nil, val[2], nil)
 
-                      if val[2]
-                        result = @builder.prototype(result, val[2])
+                      if val[0] || val[3]
+                        result = @builder.prototype(val[0], result, val[3])
                       end
                     }
 
@@ -2459,7 +2469,7 @@ keyword_variable: kNIL
                     {
                       prototype =
                         if val[2]
-                          @builder.prototype(val[1], val[2])
+                          @builder.prototype(nil, val[1], val[2])
                         else
                           val[1]
                         end

@@ -604,15 +604,12 @@ module Parser
         collection_map(begin_t, args, end_t))
     end
 
-    def prototype(args, return_type)
-      loc =
-        if args.loc.expression
-          join_exprs(args, return_type)
-        else
-          return_type.loc.expression
-        end
+    def prototype(genargs, args, return_type)
+      locs = [genargs, args, return_type].map { |n| n&.loc&.expression }.compact
 
-      n(:prototype, [args, return_type],
+      loc = locs.reduce { |a, b| a.join(b) }
+
+      n(:prototype, [genargs, args, return_type],
         expr_map(loc))
     end
 
@@ -1142,6 +1139,11 @@ module Parser
       n(:tr_gendecl, [cpath, *genargs],
         expr_map(
           cpath.loc.expression.join(loc(end_t))))
+    end
+
+    def tr_genargs(begin_t, genargs, end_t)
+      n(:tr_genargs, genargs,
+        expr_map(loc(begin_t).join(loc(end_t))))
     end
 
     def tr_gendeclarg(tok)
