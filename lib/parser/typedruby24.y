@@ -2498,6 +2498,7 @@ tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
        tr_argsig: tr_type
                     {
                       result = val[0]
+                      @lexer.state = :expr_beg
                     }
                 |
                     {
