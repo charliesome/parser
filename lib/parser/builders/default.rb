@@ -1120,6 +1120,11 @@ module Parser
         expr_map(loc(begin_t).join(type.loc.expression).join(loc(end_t))))
     end
 
+    def tr_tuple(begin_t, types, end_t)
+      n(:tr_tuple, types,
+        expr_map(loc(begin_t).join(loc(end_t))))
+    end
+
     def tr_hash(begin_t, key_type, assoc_t, value_type, end_t)
       n(:tr_hash, [key_type, value_type],
         binary_op_map(key_type, assoc_t, value_type))

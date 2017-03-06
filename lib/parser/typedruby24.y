@@ -2461,6 +2461,12 @@ tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
                     {
                       result = @builder.tr_array(val[0], val[1], val[2])
                     }
+                | tLBRACK tr_type tCOMMA tr_types rbracket
+                    {
+                      types = val[3]
+                      types.unshift(val[1])
+                      result = @builder.tr_tuple(val[0], types, val[4])
+                    }
                 | tLBRACE tr_type tASSOC tr_type tRCURLY
                     {
                       result = @builder.tr_hash(val[0], val[1], val[2], val[3], val[4])
