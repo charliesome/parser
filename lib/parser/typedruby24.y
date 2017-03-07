@@ -2471,7 +2471,7 @@ tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
                     {
                       result = @builder.tr_hash(val[0], val[1], val[2], val[3], val[4])
                     }
-                | tLBRACE block_param_def tr_returnsig tRCURLY
+                | tLBRACE tr_blockproto tr_returnsig tRCURLY
                     {
                       prototype =
                         if val[2]
@@ -2527,6 +2527,13 @@ tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
                 | tCONSTANT
                     {
                       result = [@builder.tr_gendeclarg(val[0])]
+                    }
+
+   tr_blockproto: { @static_env.extend_dynamic }
+                  block_param_def
+                    {
+                      @static_env.unextend
+                      result = val[1]
                     }
 end
 
