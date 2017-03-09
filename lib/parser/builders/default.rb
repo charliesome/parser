@@ -1176,6 +1176,11 @@ module Parser
         expr_map(loc(begin_t).join(loc(end_t))))
     end
 
+    def tr_ivardecl(def_t, ivar, type)
+      n(:tr_ivardecl, [value(ivar).to_sym, type],
+        expr_map(loc(def_t).join(type.loc.expression)))
+    end
+
     private
 
     #

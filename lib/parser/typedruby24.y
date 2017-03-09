@@ -192,6 +192,10 @@ rule
                     {
                       result = @builder.multi_assign(val[0], val[1], val[2])
                     }
+                | kDEF tIVAR tCOLON tr_type
+                    {
+                      result = @builder.tr_ivardecl(val[0], val[1], val[3])
+                    }
                 | expr
 
     command_asgn: lhs tEQL command_rhs
