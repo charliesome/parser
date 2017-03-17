@@ -2504,6 +2504,16 @@ tr_methodgenargs: tLBRACK2 tr_gendeclargs rbracket
                           diagnostic :error, :bad_special_type, { value: val[0][0] }, val[0]
                         end
                     }
+                | tLPAREN tr_union_type rparen
+                    {
+                      result = val[1]
+                    }
+
+   tr_union_type: tr_union_type tPIPE tr_type
+                    {
+                      result = @builder.tr_or(val[0], val[2])
+                    }
+                | tr_type
 
        tr_argsig: tr_type
                     {

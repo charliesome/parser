@@ -1181,6 +1181,11 @@ module Parser
         expr_map(loc(def_t).join(type.loc.expression)))
     end
 
+    def tr_or(a, b)
+      n(:tr_or, [a, b],
+        expr_map(a.loc.expression.join(b.loc.expression)))
+    end
+
     private
 
     #
